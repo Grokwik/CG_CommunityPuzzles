@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BracketsEnhancedEd_Tests.cs" />
+    <Compile Include="MagicStones_Tests.cs" />
     <Compile Include="Properties\TstAssemblyInfo.cs" />
     <Compile Include="TheTwoEggs_Tests.cs" />
   </ItemGroup>
