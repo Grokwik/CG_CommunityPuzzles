@@ -5,24 +5,57 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
-/**
- * Auto-generated code below aims at helping you parse
- * the standard input according to the problem statement.
- **/
-class Solution
+namespace TextAlignment
 {
-    static void Main(string[] args)
+    /**
+     * Auto-generated code below aims at helping you parse
+     * the standard input according to the problem statement.
+     **/
+    class Solution
     {
-        string alignment = Console.ReadLine();
-        int N = int.Parse(Console.ReadLine());
-        for (int i = 0; i < N; i++)
+        static string AlignLeft(string line)
         {
-            string text = Console.ReadLine();
+            return line;
         }
 
-        // Write an action using Console.WriteLine()
-        // To debug: Console.Error.WriteLine("Debug messages...");
+        static string AlignRight(string line)
+        {
+            return line;
+        }
 
-        Console.WriteLine("answer");
+        static string Center(string line)
+        {
+            return line;
+        }
+
+        static string Justify(string line)
+        {
+            return line;
+        }
+
+        static string DoIt(string alignment, string line)
+        {
+            if (alignment == "LEFT")
+                return AlignLeft(line);
+            if (alignment == "RIGHT")
+                return AlignRight(line);
+            if (alignment == "CENTER")
+                return Center(line);
+            if (alignment == "JUSTIFY")
+                return Justify(line);
+            return line;
+        }
+        static void Main(string[] args)
+        {
+            string alignment = Console.ReadLine();
+            int N = int.Parse(Console.ReadLine());
+            for (int i = 0; i < N; i++)
+            {
+                string text = Console.ReadLine();
+                Console.WriteLine(DoIt(alignment, text));
+            }
+
+//            Console.WriteLine("answer");
+        }
     }
 }

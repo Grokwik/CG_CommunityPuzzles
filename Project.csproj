@@ -50,6 +50,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="Properties\PrjAssemblyInfo.cs" />
     <Compile Include="SimplifySelectionRange.cs" />
+    <Compile Include="TextAlignment.cs" />
     <Compile Include="These-romans-are-crazy.cs" />
     <Compile Include="TheTwoEggs.cs" />
   </ItemGroup>
