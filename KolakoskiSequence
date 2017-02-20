@@ -1,0 +1,64 @@
+/*
+A Kolakoski sequence, named after William Kolakoski, is an infinite sequence of digits whose run lengths reduce to the sequence itself.
+
+For example, the Kolakoski sequence for the numbers 1 and 2 is
+1,2,2,1,1,2,1,2,2,1,2,2,1,1,2,1,1,2,2,1,2,1,1,2,1,2,2,1,1…
+because, when writing down the successive run lengths of 1s and 2s, you get the same sequence back:
+
+Sequence:    1  2 2  1 1  2  1  2 2  1  2 2 …
+             ↕   ↕    ↕   ↕  ↕   ↕   ↕   ↕
+Run lengths: 1   2    2   1  1   2   1   2  …  ← same sequence
+Your goal is to output the first N elements of the Kolakoski sequence given its first two distinct digits A and B.
+Entrée
+Line 1: The number N of digits to output
+Line 2: The digits A and B which will form the sequence, in that order
+Sortie
+The Kolakoski sequence, without any separator.
+Contraintes
+1 ≤ N ≤ 1000
+1 ≤ A ≤ 9
+1 ≤ B ≤ 9
+A ≠ B
+*/
+using System;
+using System.Linq;
+using System.IO;
+using System.Text;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace KolakoskiSequence
+{
+    class Solution
+    {
+        static string[] Digits;
+        static string GenerateSequence(string input)
+        {
+            var charArray = input.ToCharArray();
+            var i = 0;
+            var output = new StringBuilder();
+            foreach (var c in charArray)
+            {
+                output.Append(Convert.ToChar(Digits[(i++)%2]), int.Parse(c.ToString()));
+            }
+            return output.ToString();
+        }
+        
+        static void Main(string[] args)
+        {
+            int N = int.Parse(Console.ReadLine());
+            string[] inputs = Console.ReadLine().Split(' ');
+            Console.Error.WriteLine("------------------------------");
+            Console.Error.WriteLine("{0}\n{1} {2}", N, inputs[0], inputs[1]);
+            Console.Error.WriteLine("------------------------------");
+            Digits = new string[2]  { inputs[0], inputs[1] };
+            var output = inputs[0]+inputs[1];
+            do
+            {
+                output = GenerateSequence(output);
+            }
+            while (output.Length < N);
+            Console.WriteLine(output.Substring(0, N));
+        }
+    }
+}
