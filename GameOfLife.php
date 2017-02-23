@@ -10,7 +10,7 @@ function GetNeighbourCount($line, $col)
     $minline = ($line > 0) ? $line-1 : 0;
     $mincol = ($col > 0) ? $col-1 : 0;
     $maxline = ($line < $height-1) ? $line+1 : $height-1;
-    $maxcol = ($col < $width-1) ? $col+1 : $height-1;
+    $maxcol = ($col < $width-1) ? $col+1 : $width-1;
     for($i=$minline ; $i<$maxline+1 ; $i++)
     {
         for($j=$mincol ; $j<$maxcol+1 ; $j++)
