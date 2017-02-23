@@ -72,8 +72,7 @@ class Solution
     
     static string GetCode(string input)
     {
-        var code = input.Substring(25);
-        var strDigits = code.Split('-');
+        var strDigits = input.Substring(25).Split('-');
         var digits = new StringBuilder();
         for(var i=0 ; i<strDigits.Length ; i++)
         {
@@ -116,11 +115,10 @@ class Solution
 
     static void Main(string[] args)
     {
-        string msg = Console.ReadLine();
-        msg = msg.ToLower();
+        var msg = Console.ReadLine().ToLower();
+
         FillAlphabet(msg);
         msg = ConvertMsg(msg);
-        int[] digits = null;
         Console.WriteLine(GetCode(msg));
     }
 }
