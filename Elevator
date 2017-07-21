@@ -1,0 +1,86 @@
+using System;
+using System.Linq;
+using System.IO;
+using System.Text;
+using System.Collections;
+using System.Collections.Generic;
+
+/*
+A building has n floors.
+It has an elevator that is controlled by two buttons only: UP and DOWN. 
+
+By pressing the UP button, the elevator will go exactly a floors up.
+By pressing the DOWN button, the elevator will go exactly b floors down.
+
+If the elevator is commanded to go lower than the first floor or higher than the n-th floor, it will refuse to move and remain on its current floor.
+
+The elevator starts on the k-th floor. Count how many times the buttons should be pressed to move the elevator to the m-th floor.
+
+** Entrée
+Line 1: 5 space separated integers in order: n a b k m
+
+** Sortie
+One line that contains 1 integer - minimal number of buttons pressed, required to move the elevator to the floor m.
+
+If it is impossible to move the elevator to the floor m, print IMPOSSIBLE
+
+** Contraintes
+1 ≤ n ≤ 10000
+1 ≤ a ≤ n
+1 ≤ b ≤ n
+1 ≤ k ≤ n
+1 ≤ m ≤ n
+*/
+
+namespace Elevator
+{
+    class Solution
+    {
+        static int FloorCount;
+        static int Up;
+        static int Down;
+        static int StartFloor;
+        static int TargetFloor;
+
+        static bool ItsPossible()
+        {
+            return (0 == TargetFloor%Up
+                 || 0 == (FloorCount-TargetFloor)%Down
+                 || 0 == (TargetFloor-StartFloor)%Up
+                 || 0 == (StartFloor-TargetFloor)%Down);
+        }
+
+        static string DoIt()
+        {
+            for (var u = 0 ; u < FloorCount ; u++)
+            {
+                for (var d = 0 ; d < FloorCount; d++)
+                {
+                    var result = (StartFloor + u * Up - d * Down);
+                    if (result == TargetFloor)
+                    {
+                        Console.Error.WriteLine("{0} up / {1} down => {2}", u, d, result);
+                        return (u + d).ToString();
+                    }
+                }
+            }
+            return "IMPOSSIBLE";
+        }
+
+        static void Main(string[] args)
+        {
+            string[] inputs = Console.ReadLine().Split(' ');
+            FloorCount = int.Parse(inputs[0]);
+            Up = int.Parse(inputs[1]);
+            Down = int.Parse(inputs[2]);
+            StartFloor = int.Parse(inputs[3]);
+            TargetFloor = int.Parse(inputs[4]);
+            Console.Error.WriteLine("{0} floors\n{1} up {2} down", FloorCount, Up, Down);
+            Console.Error.WriteLine("Starting at {0} to go to {1}", StartFloor, TargetFloor);
+            if (ItsPossible())
+                Console.WriteLine(DoIt());
+            else
+                Console.WriteLine("IMPOSSIBLE");
+        }
+    }
+}
