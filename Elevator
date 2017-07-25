@@ -1,8 +1,4 @@
 using System;
-using System.Linq;
-using System.IO;
-using System.Text;
-using System.Collections;
 using System.Collections.Generic;
 
 /*
@@ -34,53 +30,87 @@ If it is impossible to move the elevator to the floor m, print IMPOSSIBLE
 
 namespace Elevator
 {
+    class Trip
+    {
+        public int BPressCount;
+        public int CurrentFloor;
+        
+        public Trip(int cFloor)
+        {
+            BPressCount = 0;
+            CurrentFloor = cFloor;
+        }
+    }
+
     class Solution
     {
-        static int FloorCount;
+        #region Params
+        public static int FloorCount;
         static int Up;
         static int Down;
         static int StartFloor;
         static int TargetFloor;
+        #endregion
 
-        static bool ItsPossible()
-        {
-            return (0 == TargetFloor%Up
-                 || 0 == (FloorCount-TargetFloor)%Down
-                 || 0 == (TargetFloor-StartFloor)%Up
-                 || 0 == (StartFloor-TargetFloor)%Down);
-        }
-
-        static string DoIt()
-        {
-            for (var u = 0 ; u < FloorCount ; u++)
-            {
-                for (var d = 0 ; d < FloorCount; d++)
-                {
-                    var result = (StartFloor + u * Up - d * Down);
-                    if (result == TargetFloor)
-                    {
-                        Console.Error.WriteLine("{0} up / {1} down => {2}", u, d, result);
-                        return (u + d).ToString();
-                    }
-                }
-            }
-            return "IMPOSSIBLE";
-        }
-
-        static void Main(string[] args)
+        static void init()
         {
             string[] inputs = Console.ReadLine().Split(' ');
             FloorCount = int.Parse(inputs[0]);
             Up = int.Parse(inputs[1]);
             Down = int.Parse(inputs[2]);
-            StartFloor = int.Parse(inputs[3]);
-            TargetFloor = int.Parse(inputs[4]);
+            StartFloor = int.Parse(inputs[3]) -1;   // -1 because it's zero based indexes
+            TargetFloor = int.Parse(inputs[4]) -1;  //  ""
             Console.Error.WriteLine("{0} floors\n{1} up {2} down", FloorCount, Up, Down);
             Console.Error.WriteLine("Starting at {0} to go to {1}", StartFloor, TargetFloor);
-            if (ItsPossible())
-                Console.WriteLine(DoIt());
-            else
-                Console.WriteLine("IMPOSSIBLE");
+        }
+
+        static void Main(string[] args)
+        {
+            init();
+            var alreadyVisited = new bool [FloorCount];
+            var trips = new Queue<Trip>();
+            
+            trips.Enqueue(new Trip(StartFloor));
+            alreadyVisited[StartFloor] = true;
+            while (0 != trips.Count)
+            {
+                var cTripU = trips.Dequeue();
+                var cFloor = cTripU.CurrentFloor;
+                
+                // Up ! Up ! Up ! Up !
+                cTripU.BPressCount++;
+                cTripU.CurrentFloor += Up;
+                if (cTripU.CurrentFloor > FloorCount-1)
+                    cTripU.CurrentFloor -= Up;
+                if (TargetFloor == cTripU.CurrentFloor)
+                {
+                    Console.WriteLine("{0}", cTripU.BPressCount);
+                    return;
+                }
+                if (!alreadyVisited[cTripU.CurrentFloor])
+                {
+                    alreadyVisited[cTripU.CurrentFloor] = true;
+                    trips.Enqueue(cTripU);
+                }
+
+                // Going down :(
+                var cTripD = new Trip(cFloor-Down);
+                cTripD.BPressCount = cTripU.BPressCount;
+                if (cTripD.CurrentFloor < 0)
+                    cTripD.CurrentFloor += Down;
+
+                if (TargetFloor == cTripD.CurrentFloor)
+                {
+                    Console.WriteLine("{0}", cTripD.BPressCount);
+                    return;
+                }
+                if (!alreadyVisited[cTripD.CurrentFloor])
+                {
+                    alreadyVisited[cTripD.CurrentFloor] = true;
+                    trips.Enqueue(cTripD);
+                }
+            }
+            Console.WriteLine("IMPOSSIBLE");
         }
     }
 }
